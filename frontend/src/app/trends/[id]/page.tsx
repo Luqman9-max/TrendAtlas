@@ -6,6 +6,7 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { fetchTrendDetail } from '@/lib/api';
 import ScoreGauge from '@/components/ScoreGauge';
+import WatchButton from '@/components/WatchButton';
 
 const LineChart = dynamic(() => import('recharts').then(m => m.LineChart), { ssr: false });
 const Line = dynamic(() => import('recharts').then(m => m.Line), { ssr: false });
@@ -66,7 +67,10 @@ export default function TrendDetailPage() {
 
       <div className="flex flex-col md:flex-row md:items-start gap-6 mb-8">
         <div className="flex-1">
-          <h1 className="text-2xl md:text-3xl font-bold mb-2">{trend.name}</h1>
+          <div className="flex items-center gap-3 mb-2">
+            <h1 className="text-2xl md:text-3xl font-bold">{trend.name}</h1>
+            <WatchButton trendId={trend.id} size="md" />
+          </div>
           {trend.description && <p className="text-text-muted text-sm mb-3">{trend.description}</p>}
           <div className="flex flex-wrap gap-2 mb-3">
             <span className={`badge border ${platformColors[trend.platform] || ''}`}>{trend.platform}</span>

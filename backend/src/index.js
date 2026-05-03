@@ -7,6 +7,7 @@ const { errorHandler, notFoundHandler } = require('./middleware/errorHandler');
 const healthRoutes = require('./routes/health');
 const adminRoutes = require('./routes/admin');
 const trendsRoutes = require('./routes/trends');
+const watchlistRoutes = require('./routes/watchlist');
 const { initCronJobs } = require('./jobs/fetchTrends');
 
 const app = express();
@@ -28,6 +29,7 @@ app.use(requestLogger);
 app.use('/api', healthRoutes);
 app.use('/api', adminRoutes);
 app.use('/api', trendsRoutes);
+app.use('/api', watchlistRoutes);
 
 // ---------------------------------------------------------------------------
 // Error Handling

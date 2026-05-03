@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { useAuth } from '@/components/AuthProvider';
+import { signOut } from '@/lib/auth';
 
 const navLinks = [
   { href: '/', label: 'Dashboard', icon: '📊' },
@@ -12,7 +13,13 @@ const navLinks = [
 
 export default function Navbar() {
   const pathname = usePathname();
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const router = useRouter();
+  const { user, loading } = useAuth();
+
+  const handleSignOut = async () => {
+    await signOut();
+    router.push('/');
+  };
 
   return (
     <>
@@ -45,6 +52,28 @@ export default function Navbar() {
             <span className="w-2 h-2 rounded-full bg-success pulse-dot"></span>
             Live
           </div>
+          {!loading && (
+            user ? (
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-text-muted truncate max-w-[120px]">
+                  {user.email?.split('@')[0]}
+                </span>
+                <button
+                  onClick={handleSignOut}
+                  className="px-3 py-1.5 text-xs text-text-muted hover:text-foreground bg-surface-hover border border-border rounded-lg transition-all"
+                >
+                  Sign Out
+                </button>
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                className="px-4 py-1.5 text-xs font-medium text-accent bg-accent-muted border border-accent/30 rounded-lg hover:bg-accent/20 transition-all"
+              >
+                Sign In
+              </Link>
+            )
+          )}
         </div>
       </nav>
 
@@ -56,15 +85,19 @@ export default function Navbar() {
               key={href}
               href={href}
               className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg text-xs transition-all ${
-                pathname === href
-                  ? 'text-accent'
-                  : 'text-text-muted'
+                pathname === href ? 'text-accent' : 'text-text-muted'
               }`}
             >
               <span className="text-lg">{icon}</span>
               {label}
             </Link>
           ))}
+          {!loading && !user && (
+            <Link href="/login" className="flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg text-xs text-text-muted">
+              <span className="text-lg">👤</span>
+              Sign In
+            </Link>
+          )}
         </div>
       </nav>
 
@@ -74,9 +107,16 @@ export default function Navbar() {
           <span className="text-lg font-bold gradient-text">TrendAtlas</span>
           <span className="text-[9px] font-medium px-1.5 py-0.5 rounded-full bg-accent-muted text-accent border border-accent/30">BETA</span>
         </Link>
-        <div className="flex items-center gap-1.5 text-xs text-text-dim">
-          <span className="w-2 h-2 rounded-full bg-success pulse-dot"></span>
-          Live
+        <div className="flex items-center gap-2">
+          <span className="flex items-center gap-1.5 text-xs text-text-dim">
+            <span className="w-2 h-2 rounded-full bg-success pulse-dot"></span>
+            Live
+          </span>
+          {!loading && user && (
+            <button onClick={handleSignOut} className="text-xs text-text-muted px-2 py-1 bg-surface-hover rounded-md border border-border">
+              Sign Out
+            </button>
+          )}
         </div>
       </div>
     </>

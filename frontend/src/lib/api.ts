@@ -8,6 +8,18 @@ const api = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
+// Request interceptor to attach auth token
+api.interceptors.request.use(async (config) => {
+  if (typeof window !== 'undefined') {
+    const { getAccessToken } = await import('@/lib/auth');
+    const token = await getAccessToken();
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+  }
+  return config;
+});
+
 // Response interceptor for error handling
 api.interceptors.response.use(
   (response) => response,
@@ -61,4 +73,27 @@ export async function triggerPipeline() {
   return data;
 }
 
+// --- Watchlist API ---
+
+export async function fetchWatchlist() {
+  const { data } = await api.get('/watchlist');
+  return data;
+}
+
+export async function addToWatchlist(trendId: number) {
+  const { data } = await api.post('/watchlist', { trendId });
+  return data;
+}
+
+export async function removeFromWatchlist(trendId: number) {
+  const { data } = await api.delete(`/watchlist/${trendId}`);
+  return data;
+}
+
+export async function checkWatchlist(trendId: number) {
+  const { data } = await api.get(`/watchlist/check/${trendId}`);
+  return data;
+}
+
 export default api;
+

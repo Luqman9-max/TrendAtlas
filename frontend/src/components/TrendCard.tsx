@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import WatchButton from '@/components/WatchButton';
 
 interface TrendCardProps {
   trend: {
@@ -76,6 +77,9 @@ export default function TrendCard({ trend }: TrendCardProps) {
           <span className="badge bg-surface-hover text-text-muted border border-border">
             {trend.category}
           </span>
+          <div className="ml-auto">
+            <WatchButton trendId={trend.id} size="sm" />
+          </div>
         </div>
 
         {/* Metrics bar */}
