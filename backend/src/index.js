@@ -5,6 +5,9 @@ const cors = require('cors');
 const { requestLogger } = require('./middleware/logger');
 const { errorHandler, notFoundHandler } = require('./middleware/errorHandler');
 const healthRoutes = require('./routes/health');
+const adminRoutes = require('./routes/admin');
+const trendsRoutes = require('./routes/trends');
+const { initCronJobs } = require('./jobs/fetchTrends');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -23,6 +26,8 @@ app.use(requestLogger);
 // Routes
 // ---------------------------------------------------------------------------
 app.use('/api', healthRoutes);
+app.use('/api', adminRoutes);
+app.use('/api', trendsRoutes);
 
 // ---------------------------------------------------------------------------
 // Error Handling
@@ -36,6 +41,9 @@ app.use(errorHandler);
 app.listen(PORT, () => {
   console.log(`[TrendAtlas] Backend running on http://localhost:${PORT}`);
   console.log(`[TrendAtlas] Health check: http://localhost:${PORT}/api/health`);
+
+  // Start cron jobs after server is listening
+  initCronJobs();
 });
 
 module.exports = app;
