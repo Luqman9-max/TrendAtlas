@@ -1,0 +1,14 @@
+{
+  "name": "trendatlas",
+  "version": "1.0.0",
+  "description": "Root project for TrendAtlas",
+  "private": true,
+  "scripts": {
+    "dev:frontend": "npm run dev --prefix frontend",
+    "dev:backend": "npm run dev --prefix backend",
+    "dev": "concurrently -c \"cyan.bold,blue.bold\" -n \"BACKEND,FRONTEND\" \"npm run dev:backend\" \"npm run dev:frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
