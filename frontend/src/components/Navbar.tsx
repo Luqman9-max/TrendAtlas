@@ -7,6 +7,7 @@ import { signOut } from '@/lib/auth';
 
 const navLinks = [
   { href: '/', label: 'Dashboard', icon: '📊' },
+  { href: '/analytics', label: 'Analytics', icon: '📈' },
   { href: '/compare', label: 'Compare', icon: '⚖️' },
   { href: '/watchlist', label: 'Watchlist', icon: '⭐' },
 ];

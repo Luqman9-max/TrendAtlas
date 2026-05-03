@@ -95,5 +95,11 @@ export async function checkWatchlist(trendId: number) {
   return data;
 }
 
+// --- Analytics API ---
+export async function fetchAnalytics() {
+  const { data } = await api.get('/analytics');
+  return data;
+}
+
 export default api;
 
