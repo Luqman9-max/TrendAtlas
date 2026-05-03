@@ -1,0 +1,30 @@
+# Render Blueprint — Backend deployment configuration
+# See: https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: trendatlas-api
+    runtime: node
+    plan: free
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: CORS_ORIGIN
+        sync: false  # Set to your Vercel URL
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: REDDIT_CLIENT_ID
+        sync: false
+      - key: REDDIT_CLIENT_SECRET
+        sync: false
+      - key: REDDIT_USER_AGENT
+        value: TrendAtlas/1.0
+      - key: GITHUB_TOKEN
+        sync: false
